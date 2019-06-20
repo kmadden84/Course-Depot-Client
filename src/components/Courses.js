@@ -12,7 +12,7 @@ class Courses extends Component {
   }
   componentDidMount(props) {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:5000/api/courses", {
+      fetch("https://km-rest-api.herokuapp.com/api/courses", {
         method: "GET",
         mode: "cors",
       })

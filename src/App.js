@@ -36,7 +36,7 @@ class App extends Component {
       loader: true,
     });
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:5000/api/users", {
+      fetch("https://km-rest-api.herokuapp.com/api/users", {
         method: "GET",
         mode: 'cors',
         headers: new Headers({

@@ -14,7 +14,7 @@ class CreateCourse extends Component {
       var user = this.props.user;
       var pass = this.props.password;
 
-      fetch("http://localhost:5000/api/courses", {
+      fetch("https://km-rest-api.herokuapp.com/api/courses", {
         method: "POST",
         headers: {
           'Authorization': 'Basic ' + btoa(user + ':' + pass),

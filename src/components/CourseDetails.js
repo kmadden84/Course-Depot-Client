@@ -22,7 +22,7 @@ class CourseDetails extends Component {
       this.setState({
         currentCourse: target
       });
-      fetch('http://localhost:5000/api/courses/' + target + '', {
+      fetch('https://km-rest-api.herokuapp.com/api/courses/' + target + '', {
         method: "GET",
         mode: "cors",
       })
@@ -65,7 +65,7 @@ class CourseDetails extends Component {
     } else {
 
       return new Promise((resolve, reject) => {
-        fetch('http://localhost:5000/api/courses/' + target + '', {
+        fetch('https://km-rest-api.herokuapp.com/api/courses/' + target + '', {
           method: "DELETE",
           headers: {
             'Authorization': 'Basic ' + btoa(user + ':' + pass),

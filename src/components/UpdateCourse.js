@@ -29,7 +29,7 @@ class UpdateCourse extends Component {
         currentCourse: target
       });
 
-      fetch('http://localhost:5000/api/courses/' + target + '', {
+      fetch('https://km-rest-api.herokuapp.com/api/courses/' + target + '', {
         method: "GET",
         mode: "cors",
       })
@@ -82,7 +82,7 @@ class UpdateCourse extends Component {
     else {
       //update request
       return new Promise((resolve, reject) => {
-        fetch('http://localhost:5000/api/courses/' + target + '', {
+        fetch('https://km-rest-api.herokuapp.com/api/courses/' + target + '', {
           method: "PUT",
           headers: {
             'Authorization': 'Basic ' + btoa(user + ':' + pass),
