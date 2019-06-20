@@ -20,10 +20,10 @@ class App extends Component {
     super(props)
 
     this.state = {
-      emailAddress: Cookies.get("name"),
-      password: Cookies.get("password"),
-      firstName: Cookies.get("firstName"),
-      lastName: Cookies.get("lastName"),
+      emailAddress: (Cookies.get("name")) ? Cookies.get("name") : "",
+      password: (Cookies.get("password")) ? Cookies.get("password") : "",
+      firstName: (Cookies.get("firstName")) ? Cookies.get("firstName") : "",
+      lastName: (Cookies.get("lastName")) ? Cookies.get("lastName") : "",
       detailsLoader: ""
     }
 
