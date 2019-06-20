@@ -51,8 +51,8 @@ class App extends Component {
           response.json().then((responseJson) => {
             if (response.status === 200) {
               console.log(responseJson)
-              Cookies.set('name', responseJson["Email"], { path: '/' });
-              Cookies.set('password', responseJson["Pass"], { path: '/' });
+              Cookies.set('name', user, { path: '/' });
+              Cookies.set('password', pass, { path: '/' });
               this.setState({
                 emailAddress: user,
                 password: pass
