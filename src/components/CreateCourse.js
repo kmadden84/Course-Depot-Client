@@ -54,23 +54,35 @@ class CreateCourse extends Component {
     })
   }
   render(props) {
-    let error = [];
+    let errors = [];
     //mapping error messages, pushing to error variable
     Object.keys(this.state.errorMessage).map(i =>
-      error.push(this.state.errorMessage[i])
+      errors.push(this.state.errorMessage[i].replaceAll("Validation error:",""))
     )
+    console.log(this.state.errorMessage)
     return (
       <div className="bounds course--detail">
         <h1>Create Course</h1>
+        
         <div>
+
+        { 
+          (this.state.errorMessage !== "") ?
           <div>
             <h2 className="validation--errors--label">Validation errors</h2>
             <div className="validation-errors">
               <ul>
-                <li>{error}</li>
+              {
+              errors.map(error => {
+                console.log(errors)
+               return <li>{error}</li>
+              })
+              }
               </ul>
             </div>
           </div>
+          : ''
+        }
           <form>
             <div className="grid-66">
               <div className="course--header">
