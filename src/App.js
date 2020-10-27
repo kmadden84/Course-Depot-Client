@@ -9,16 +9,21 @@ import UserSignOut from './components/UserSignOut';
 import NoResults from './components/NoResults';
 import Forbidden from './components/Forbidden';
 import Header from './components/Header';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { createBrowserHistory } from 'history'
+
+
+
 export const history = createBrowserHistory();
+
 
 class App extends Component {
 
+
+
   constructor(props) {
     super(props)
-
     this.state = {
       emailAddress: (Cookies.get("name")) ? Cookies.get("name") : "",
       password: (Cookies.get("password")) ? Cookies.get("password") : "",
@@ -26,10 +31,18 @@ class App extends Component {
       lastName: (Cookies.get("lastName")) ? Cookies.get("lastName") : "",
       detailsLoader: ""
     }
-
+    console.log(this.state.emailAddress)
     this.signIn = this.signIn.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.redirectToHome = this.redirectToHome.bind(this);
 
+  }
+  redirectToHome = () => {
+    console.log('redirect');
+    const { history } = this.props;
+    console.log(history);
+
+    if (history) history.push('/');
   }
   signIn = (user, pass) => {
     this.setState({
@@ -49,28 +62,32 @@ class App extends Component {
           });
 
           response.json().then((responseJson) => {
+            console.log(response.status)
             if (response.status === 200) {
-              console.log(responseJson)
               Cookies.set('name', user, { path: '/' });
               Cookies.set('password', pass, { path: '/' });
               this.setState({
                 emailAddress: user,
                 password: pass
               });
+              this.redirectToHome();
+
+              Cookies.set('firstName', responseJson["First Name"], { path: '/' });
+              Cookies.set('lastName', responseJson["Last Name"], { path: '/', });
+              this.setState({
+                firstName: responseJson["First Name"],
+                lastName: responseJson["Last Name"]
+              })
             }
-            if (response.status === 401) {
+            else if (response.status === 401) {
               alert(responseJson.Error)
             }
-            Cookies.set('firstName', responseJson["First Name"], { path: '/' });
-            Cookies.set('lastName', responseJson["Last Name"], { path: '/', });
-            this.setState({
-              firstName: responseJson["First Name"],
-              lastName: responseJson["Last Name"]
-            })
-            if (this.props.history.location.pathname !== "/signin") {
-              history.goBack()
-            } else {
-              history.goBack()
+            else {
+              if (this.props.history.location.pathname !== "/signin") {
+                this.props.history.goBack()
+              } else {
+                this.props.history.push("/");
+              }
             }
           })
         }).catch((error) => {
@@ -92,7 +109,7 @@ class App extends Component {
       Cookies.remove(cookieName, neededAttributes);
     });
 
-    this.props.history.push("/");
+    this.props.history.push("/signin");
   }
 
   render(props) {
@@ -110,13 +127,13 @@ class App extends Component {
         <Switch>
           <Route exact path="/" render={(props) => <Courses {...props} />} />
           <Route path={`${this.props.match.path}signout`} exact={true} render={(props) => <UserSignOut signout={this.clearState} {...props} />} />
-          <Route path={`${this.props.match.path}signin`} render={(props) => <UserSignIn loader={this.state.loader} currentState={this.state} userdata={this.signIn} {...props} />} />
+          <Route path={`${this.props.match.path}signin`} exact={true} render={(props) => <UserSignIn loader={this.state.loader} currentState={this.state} userdata={this.signIn} {...props} />} />
           <PrivateRoute path={`${this.props.match.path}courses/create`} component={CreateCourse} />
           <PrivateRoute exact path={`${this.props.match.path}courses/:id/update`} component={UpdateCourse} />
           <Route exact path={`${this.props.match.path}courses/:id`} render={(props) => <CourseDetails password={this.state.password} user={this.state.emailAddress} {...props} />} />
           <Route exact path={`${this.props.match.path}signup`} render={(props) => <UserSignUp userdata={this.signIn} {...props} />} />
           <Route exact path='/forbidden' exact={true} component={Forbidden} />
-          <Route path='/error' exact={true} component={Error} />
+          <Route exact path='/error' exact={true} component={Error} />
           <Route path='*' exact={true} component={NoResults} />
         </Switch>
       </div>
@@ -124,4 +141,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
