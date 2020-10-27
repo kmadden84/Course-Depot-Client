@@ -26,7 +26,7 @@ class UserSignUp extends Component {
 
     else {
       return new Promise((resolve, reject) => {
-        fetch('http://localhost:5000/api/users/', {
+        fetch('https://km-rest-api.herokuapp.com/api/users/', {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
